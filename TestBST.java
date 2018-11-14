@@ -16,8 +16,8 @@ public class TestBST {
         System.out.println("Inorder (sorted): ");
         tree.inorder();
         System.out.println("Number of node is " + tree.getSize());
-//        System.out.println(tree.delete("12"));
-//        System.out.println("---------------------------------------");
-//        tree.inorder();
+       System.out.println(tree.delete("12"));
+       System.out.println("---------------------------------------");
+       tree.inorder();
     }
 }
