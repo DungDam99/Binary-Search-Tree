@@ -93,9 +93,23 @@ public class BST<E extends Comparable<E>> extends AbstractTree<E> {
         return null;
     }
 
-    public TreeNode<E> searchParentOfElement(E element){
+    @Override
+    public void inorder() {
+        inorder(root);
+    }
+
+    ///////////////////////////////
+    public TreeNode<E> searchMostRight(TreeNode<E> e) {
+        TreeNode<E> current = e;
+        while (current != null) {
+                current = current.left;
+        }
+        return current;
+    }
+    public TreeNode<E> searchParentOfElement(TreeNode<E> e){
         TreeNode<E> current = root;
         TreeNode<E> parent = null;
+        E element = e.getElement();
         while(current != null){
             if (element.compareTo(current.getElement()) < 0){
                 parent = current;
@@ -111,57 +125,32 @@ public class BST<E extends Comparable<E>> extends AbstractTree<E> {
         }
         return null;
     }
-
-    ///////////////////////////////
-    public TreeNode<E> searchMostRight(TreeNode<E> e) {
-        TreeNode<E> current = e;
-        while (current != null) {
-                current = current.left;
-        }
-        return current;
-    }
-
     public boolean delete(E e){
+        TreeNode<E> current = search(e);
+        if (e == null || current == null){
             return true;
+        }
+        TreeNode<E> parent = searchParentOfElement(current);
+        if (current.left == null && current.right == null){
+            if (parent.right == current){
+                parent.right = null;
+            }else{
+                parent.left = null;
+            }
+        }else{
+            if (current.left != null && current.right != null){
+                TreeNode<E> mostRight = searchMostRight(current);
+                current = mostRight;
+                delete(mostRight.getElement());
+            }else{
+                TreeNode<E> child = (current.left != null)? current.left : current.right;
+                if(parent.right == current){
+                    parent.right = child;
+                }else{
+                    parent.left = child;
+                }
+            }
+        }
+        return true;
     }
-
-    @Override
-    public void inorder() {
-        inorder(root);
-    }
-
 }
-//        TreeNode<E> current = search(e);
-//        if (search(e) == null){
-//            return true;
-//        }
-//        TreeNode<E> parent = searchParentOfElement(e);
-//        if (current.left == null && current.right == null){
-//            if (parent.left == current) {
-//                parent.left = null;
-//            }else{
-//                parent.right = null;
-//            }
-//            return true;
-//        }else{
-//            if (current.left != null && current.right == null){
-//                if(parent.left == current){
-//                    parent.left = current.left;
-//                }else{
-//                    parent.right = current.left;
-//                }
-//            }else{
-//                if (current.left == null && current.right != null){
-//                    if(parent.right == current){
-//                        parent.right = current.right;
-//                    }else{
-//                        parent.left = current.right;
-//                    }
-//                }else{
-//                    ////Thay thế dữ liệu
-//                    TreeNode<E> mostRight = searchMostRight(current.right);
-//                    current = mostRight;
-//                    mostRight.
-//                }
-//            }
-//                   }
